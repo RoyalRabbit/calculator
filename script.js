@@ -23,13 +23,14 @@ console.log(divide(1,3))
 
 
 // Create display text to show on webpage each time button is pressed
-// let displayText = document.createTextNode(`${add(1,3)}`);
-// display.appendChild(displayText);
 
 buttons.forEach(obj=>{
+    // Add event listener on click
     obj.addEventListener('click', event=>{
+        // Get value of the button that was clicked
         let value=event.target.value
         console.log(display.firstChild)
+        // Add a string child element with the value of the button clicked
         let displayText = document.createTextNode(`${value}`)
         display.appendChild(displayText)
     })
