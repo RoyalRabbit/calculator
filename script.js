@@ -12,7 +12,7 @@ let numberOne = 0;
 let numberTwo = 0;
 let operatorSign = "";
 const display = document.querySelector('.display');
-
+const buttons = document.querySelectorAll('button')
 
 //Console log testing
 console.log(add(1,3))
@@ -20,8 +20,24 @@ console.log(subtract(1,3))
 console.log(multiply(1,3))
 console.log(divide(1,3))
 
-let displayText = document.createTextNode(`${add(1,3)}`)
-display.appendChild(displayText)
+
+
+// Create display text to show on webpage each time button is pressed
+// let displayText = document.createTextNode(`${add(1,3)}`);
+// display.appendChild(displayText);
+
+buttons.forEach(obj=>{
+    obj.addEventListener('click', event=>{
+        let value=event.target.value
+        console.log(display.firstChild)
+        let displayText = document.createTextNode(`${value}`)
+        display.appendChild(displayText)
+    })
+})
+
+
+
+
 
 
 
