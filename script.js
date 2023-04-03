@@ -27,22 +27,35 @@ console.log(divide(1,3))
 
 
 // Create display text to show on webpage each time button is pressed
-
+// Add event listeners on each button to watch for a click
 buttons.forEach(obj=>{
-    // Add event listener on click
     obj.addEventListener('click', event=>{
+
         // Get value of the button that was clicked
         let value=event.target.value;
         
+        // Clear display if A/C is pressed
+        if (value === 'clear') {
+            display.innerText = 0;
+        }
+ 
         // Check if button clicked was an operator
         if (operators.includes(value)) {
+
+            // Store the clicked operator value
             operatorSign=(value);
             console.log(operatorSign);
-            display.innerText = '';
+
+            // Clear the innerText in anticipation for next number 
+            display.innerText = ' ';
         }
-        // Add a string child element with the value of the button clicked
-        let displayText = document.createTextNode(`${value}`)
-        display.appendChild(displayText)
+
+        // Add a string child element with the value of the button clicked if button was a number
+        if (!isNaN(Number(value))) {
+            let displayText = document.createTextNode(`${value}`);
+            display.appendChild(displayText);
+        }
+        // Update displayValue to the currently displayed number
         displayValue=Number(display.innerText);
     })
 })

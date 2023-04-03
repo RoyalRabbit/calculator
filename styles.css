@@ -40,10 +40,13 @@ body{
 .display{
     background-color: rgb(40, 40, 40);
     width: 64rem;
+    min-height: 8rem;
     padding: 1rem 2rem;
-    text-align: right;
+    justify-content: flex-end;
     box-sizing: border-box;
     border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
 
 }
 
