@@ -49,11 +49,14 @@ buttons.forEach(obj=>{
             // Store displayValue either in num1 or num2
             if (!numberOne) {
                 numberOne=displayValue;
+                console.log(numberOne)
             } 
-            else //if (!numberTwo) {
-                {numberTwo=displayValue;
+            else {
+                numberTwo=displayValue;
+                console.log(numberTwo, 'wee')
                 numberOne = operate(operatorSign,numberOne,numberTwo);
                 display.innerText=numberOne;
+                console.log(numberOne, 'o')
             }
 
             // Store the clicked operator value
@@ -79,15 +82,17 @@ buttons.forEach(obj=>{
         displayValue=Number(display.innerText);
 
         if (value==='=') {
-            // Set numberTwo to current display value
-            numberTwo = displayValue;
+            if (!numberTwo) {
+                numberTwo = displayValue;
+            }
+
             // Run the desired operation with numberOne and numberTwo
             let answer = operate(operatorSign, numberOne, numberTwo);
             // Set numberOne as the answer for further calculations if desired
             numberOne = answer;
             // Change the display to show answer
-            display.innerText = answer;
-            console.log(answer);
+            display.innerText = numberOne;
+            console.log(numberOne);
             clearNum = 1;
         }
     })
