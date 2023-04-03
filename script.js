@@ -17,6 +17,7 @@ let displayValue = 0;
 // Set display to show 0 upon first loading
 display.innerText = displayValue;
 const buttons = document.querySelectorAll('button');
+let clearNum = 1;
 
 //Console log testing
 console.log(add(1,3))
@@ -34,56 +35,60 @@ buttons.forEach(obj=>{
         // Get value of the button that was clicked
         let value=event.target.value;
         
-        // Clear display if A/C is pressed and reset values
-        if (value === 'clear') {
-            display.innerText = 0;
-            operatorSign = '';
-            num1 = 0;
-            num2 = 0;
-        }
- 
+        // Clear values and display if AC button is pressed
+        if (value==='clear') cleared();
+
         // Check if button clicked was an operator
         if (operators.includes(value)) {
 
-            // Store the clicked operator value
-            operatorSign=(value);
-            console.log(operatorSign);
 
-            // Update displayValue to the currently displayed number
+
+            // Update displayValue to the currently displayed number and store it in numberOne
             displayValue=Number(display.innerText);
 
             // Store displayValue either in num1 or num2
             if (!numberOne) {
                 numberOne=displayValue;
-                console.log('numberOne');
-            } else if (!numberTwo) {
-                numberTwo=displayValue;
-                console.log('numberTwo');
+            } 
+            else //if (!numberTwo) {
+                {numberTwo=displayValue;
+                numberOne = operate(operatorSign,numberOne,numberTwo);
+                display.innerText=numberOne;
             }
 
+            // Store the clicked operator value
+            operatorSign=(value);
+
             // Clear the innerText in anticipation for next number 
-            display.innerText = ' ';
+            clearNum = 1;
         }
 
         // Add a string child element with the value of the button clicked if button was a number
         if (!isNaN(Number(value))) {
 
             // If display value is 0 and a number is pressd, reset the innerText to a blank string before adding new text nodes
-            if (displayValue===0) {
+            if (clearNum) {
                 display.innerText = ''
             }
             let displayText = document.createTextNode(`${value}`);
             display.appendChild(displayText);
+            clearNum = 0;
         }
 
 
         displayValue=Number(display.innerText);
 
         if (value==='=') {
+            // Set numberTwo to current display value
             numberTwo = displayValue;
+            // Run the desired operation with numberOne and numberTwo
             let answer = operate(operatorSign, numberOne, numberTwo);
+            // Set numberOne as the answer for further calculations if desired
+            numberOne = answer;
+            // Change the display to show answer
+            display.innerText = answer;
             console.log(answer);
-            
+            clearNum = 1;
         }
     })
 })
@@ -147,12 +152,18 @@ function operate(operator, num1, num2) {
         case '/':
             return divide(num1,num2);
         default:
-            return 'Not valid operator'
-        
-
-        
+            return 'Not valid operator'   
     }
 }
+// Function for clearing the calculator and resetting value
+function cleared() {
+    display.innerText = 0;
+    operatorSign = '';
+    numberOne = 0;
+    numberTwo = 0;
+    clearNum = 1;
+}
+
 
 // =============================================
 // End of Function List
