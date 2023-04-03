@@ -34,9 +34,12 @@ buttons.forEach(obj=>{
         // Get value of the button that was clicked
         let value=event.target.value;
         
-        // Clear display if A/C is pressed
+        // Clear display if A/C is pressed and reset values
         if (value === 'clear') {
             display.innerText = 0;
+            operatorSign = '';
+            num1 = 0;
+            num2 = 0;
         }
  
         // Check if button clicked was an operator
@@ -46,17 +49,42 @@ buttons.forEach(obj=>{
             operatorSign=(value);
             console.log(operatorSign);
 
+            // Update displayValue to the currently displayed number
+            displayValue=Number(display.innerText);
+
+            // Store displayValue either in num1 or num2
+            if (!numberOne) {
+                numberOne=displayValue;
+                console.log('numberOne');
+            } else if (!numberTwo) {
+                numberTwo=displayValue;
+                console.log('numberTwo');
+            }
+
             // Clear the innerText in anticipation for next number 
             display.innerText = ' ';
         }
 
         // Add a string child element with the value of the button clicked if button was a number
         if (!isNaN(Number(value))) {
+
+            // If display value is 0 and a number is pressd, reset the innerText to a blank string before adding new text nodes
+            if (displayValue===0) {
+                display.innerText = ''
+            }
             let displayText = document.createTextNode(`${value}`);
             display.appendChild(displayText);
         }
-        // Update displayValue to the currently displayed number
+
+
         displayValue=Number(display.innerText);
+
+        if (value==='=') {
+            numberTwo = displayValue;
+            let answer = operate(operatorSign, numberOne, numberTwo);
+            console.log(answer);
+            
+        }
     })
 })
 
