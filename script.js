@@ -18,12 +18,13 @@ let displayValue = 0;
 display.innerText = displayValue;
 const buttons = document.querySelectorAll('button');
 let clearNum = 1;
+let lastClicked;
 
 //Console log testing
-console.log(add(1,3))
-console.log(subtract(1,3))
-console.log(multiply(1,3))
-console.log(divide(1,3))
+// console.log(add(1,3))
+// console.log(subtract(1,3))
+// console.log(multiply(1,3))
+// console.log(divide(1,3))
 
 
 
@@ -38,9 +39,8 @@ buttons.forEach(obj=>{
         // Clear values and display if AC button is pressed
         if (value==='clear') cleared();
 
-        // Check if button clicked was an operator
+        // Check if button clicked was an operator 
         if (operators.includes(value)) {
-
 
 
             // Update displayValue to the currently displayed number and store it in numberOne
@@ -51,12 +51,10 @@ buttons.forEach(obj=>{
                 numberOne=displayValue;
                 console.log(numberOne)
             } 
-            else {
+            else if (!operators.includes(lastClicked) && lastClicked != '=') { //Check for operator switching
                 numberTwo=displayValue;
-                console.log(numberTwo, 'wee')
                 numberOne = operate(operatorSign,numberOne,numberTwo);
                 display.innerText=numberOne;
-                console.log(numberOne, 'o')
             }
 
             // Store the clicked operator value
@@ -67,22 +65,27 @@ buttons.forEach(obj=>{
         }
 
         // Add a string child element with the value of the button clicked if button was a number
-        if (!isNaN(Number(value))) {
+        if (!isNaN(Number(value)) || (value === '.' && !display.innerText.includes('.'))) {
 
-            // If display value is 0 and a number is pressd, reset the innerText to a blank string before adding new text nodes
-            if (clearNum) {
+            // If clearNum is 0 or display contains only 0 reset the innerText to a blank string before adding new text nodes
+            if (clearNum || display.innerText === '0') {
                 display.innerText = ''
             }
+            // Create text node to add onto display
             let displayText = document.createTextNode(`${value}`);
-            display.appendChild(displayText);
+            display.appendChild(displayText); // Adds the created textnode to end of displayed number
+            
+            // Add a 0 in front if first character is a decimal
+            if (display.firstChild.textContent==='.') display.prepend('0')
             clearNum = 0;
         }
 
 
         displayValue=Number(display.innerText);
 
-        if (value==='=') {
-            if (!numberTwo) {
+        // Calculate when = button is pressed
+        if (value==='=' && !operators.includes(lastClicked)) {
+            if (!numberTwo || !isNaN(Number(lastClicked))) {
                 numberTwo = displayValue;
             }
 
@@ -95,6 +98,14 @@ buttons.forEach(obj=>{
             console.log(numberOne);
             clearNum = 1;
         }
+
+        if (value==='backspace' && display.textContent) {
+            display.removeChild(display.lastChild);
+        }
+
+        // Store value in lastClicked for operation switching
+        lastClicked = value;
+
     })
 })
 
@@ -155,6 +166,8 @@ function operate(operator, num1, num2) {
         case '+':
             return add(num1,num2);
         case '/':
+            if (num2 === 0)
+                return 'Error divide by zero'
             return divide(num1,num2);
         default:
             return 'Not valid operator'   
